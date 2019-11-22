@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="system">
+            <group id="full_page_cache">
+                <group id="async_varnish" translate="label" showInDefault="1" showInWebsite="0" showInStore="0"
+                       sortOrder="610">
+                    <label>Async Varnish Configuration</label>
+                    <field id="varnish_max_header_length" type="text" translate="label comment" sortOrder="100"
+                           showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                        <label>Varnish max allowed header length.</label>
+                        <backend_model>IntegerNet\AsyncVarnish\Model\System\Config\Backend\HeaderLength</backend_model>
+                        <comment>Depends on varnish 'http_req_hdr_len' setting. Default value is 8000b (8k), minimum
+                            40b. See https://varnish-cache.org/docs/4.1/reference/varnishd.html#http-req-hdr-len.</comment>
+                        <depends>
+                            <field id="caching_application">1</field>
+                        </depends>
+                    </field>
+                </group>
+            </group>
+        </section>
+    </system>
+</config>

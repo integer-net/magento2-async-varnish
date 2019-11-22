@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <design>
+            <invalid_caches>
+                <full_page/>
+            </invalid_caches>
+        </design>
+        <system>
+            <full_page_cache>
+                <async_varnish>
+                    <varnish_max_header_length>8000</varnish_max_header_length>
+                </async_varnish>
+            </full_page_cache>
+        </system>
+    </default>
+</config>
