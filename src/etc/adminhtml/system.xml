@@ -19,7 +19,7 @@
                     <field id="varnish_fetch_tag_limit" type="text" translate="label comment" sortOrder="110"
                            showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                         <label>Varnish fetch tag limit.</label>
-                        <backend_model>IntegerNet\AsyncVarnish\Model\System\Config\Backend\HeaderLength</backend_model>
+                        <backend_model>IntegerNet\AsyncVarnish\Model\System\Config\Backend\FetchTagLimit</backend_model>
                         <comment>The maximum amount of tags that are fetched in 1 purge request. This can be
                             set to a fairly high number (1 million by default), unless you run into resource
                             limits/timeouts.</comment>
