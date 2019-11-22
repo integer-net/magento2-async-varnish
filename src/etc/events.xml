@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="clean_cache_by_tags">
+        <observer name="invalidate_varnish" disabled="true"/>
+        <observer name="invalidate_varnish_async" instance="IntegerNet\AsyncVarnish\Observer\InvalidateVarnishAsyncObserver"/>
+    </event>
+    <event name="controller_action_postdispatch_adminhtml_catalog_product_action_attribute_save">
+        <observer name="flush_varnish_pagecache" disabled="true" instance="Magento\CacheInvalidate\Observer\InvalidateVarnishObserver"/>
+        <observer name="flush_varnish_pagecache_async" instance="IntegerNet\AsyncVarnish\Observer\InvalidateVarnishAsyncObserver"/>
+    </event>
+    <event name="clean_cache_after_reindex">
+        <observer name="flush_varnish_pagecache" disabled="true" instance="Magento\CacheInvalidate\Observer\InvalidateVarnishObserver"/>
+        <observer name="flush_varnish_pagecache_async" instance="IntegerNet\AsyncVarnish\Observer\InvalidateVarnishAsyncObserver"/>
+    </event>
+</config>

@@ -5,8 +5,11 @@
 [![Coverage Status][ico-scrutinizer]][link-scrutinizer]
 [![Quality Score][ico-code-quality]][link-code-quality]
 
+Saves cache_tags to database to defer invalidation through cronjob instead of direct execution.
 
-TODO: Abstract
+Usage:
+- via crontab
+- run `bin/magento integernet:asyncvarnish:purge`
 
 ## Installation
 
