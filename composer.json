@@ -26,8 +26,15 @@
       "src/registration.php"
     ],
     "psr-4": {
-      "IntegerNet\\AsyncVarnish\\Test\\": "tests/",
       "IntegerNet\\AsyncVarnish\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "files": [
+      "src/registration.php"
+    ],
+    "psr-4": {
+      "IntegerNet\\AsyncVarnish\\": "tests/src/"
     }
   },
   "repositories": [

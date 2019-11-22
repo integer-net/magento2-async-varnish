@@ -12,4 +12,6 @@
             </argument>
         </arguments>
     </type>
+    <preference for="IntegerNet\AsyncVarnish\Api\TagRepositoryInterface"
+                type="IntegerNet\AsyncVarnish\Model\TagRepository" />
 </config>
