@@ -33,6 +33,14 @@ matrix:
       env:
         - MAGENTO_VERSION=2.3-develop
         - TEST_SUITE=integration
+    - php: 7.2
+      env:
+        - MAGENTO_VERSION=2.2
+        - TEST_SUITE=unit
+    - php: 7.3
+      env:
+        - MAGENTO_VERSION=2.3-develop
+        - TEST_SUITE=unit
 env:
   global:
     - COMPOSER_BIN_DIR=~/bin
