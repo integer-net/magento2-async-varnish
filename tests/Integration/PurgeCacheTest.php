@@ -103,8 +103,8 @@ class PurgeCacheTest extends TestCase
 //                return $output === 'Started';
 //            }
 //        );
-        // so we wait a second instead:
-        sleep(1);
+        // so we wait a second or two instead:
+        sleep(2);
     }
 
     private function stopMockServer(): void
