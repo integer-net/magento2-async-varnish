@@ -27,7 +27,10 @@ composer config repositories.travis_to_test git https://github.com/$TRAVIS_REPO_
 #TODO make it work with tags as well:
 
 composer require ${COMPOSER_PACKAGE_NAME}:dev-${TRAVIS_BRANCH}\#{$TRAVIS_COMMIT}
+
+# Install dev dependencies of module
 php ../.travis/merge-dev.php vendor/$COMPOSER_PACKAGE_NAME/composer.json composer.json
+composer update
 
 # prepare for test suite
 case $TEST_SUITE in
