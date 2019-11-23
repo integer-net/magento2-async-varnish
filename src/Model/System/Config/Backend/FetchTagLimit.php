@@ -32,23 +32,23 @@ class FetchTagLimit extends Value
      * @param Registry $registry
      * @param ScopeConfigInterface $config
      * @param TypeListInterface $cacheTypeList
+     * @param Escaper $escaper
      * @param AbstractResource|null $resource
      * @param AbstractDb|null $resourceCollection
      * @param array $data
-     * @param Escaper|null $escaper
      */
     public function __construct(
         Context $context,
         Registry $registry,
         ScopeConfigInterface $config,
         TypeListInterface $cacheTypeList,
+        Escaper $escaper,
         ?AbstractResource $resource = null,
         ?AbstractDb $resourceCollection = null,
-        array $data = [],
-        ?Escaper $escaper = null
+        array $data = []
     ) {
         parent::__construct($context, $registry, $config, $cacheTypeList, $resource, $resourceCollection, $data);
-        $this->escaper = $escaper ?: ObjectManager::getInstance()->create(Escaper::class);
+        $this->escaper = $escaper;
     }
 
     /**
