@@ -17,7 +17,7 @@ foreach ($fromJson['autoload-dev']['psr-4'] ?? [] as $key => $value) {
     $fromJson['autoload-dev']['psr-4'][$key] = $pathPrefix . $value;
 }
 
-$toJson['require-dev'] = array_merge_recursive($toJson['require-dev'] ?? [], $fromJson['require-dev']);
+$toJson['require-dev'] = array_replace_recursive($toJson['require-dev'] ?? [], $fromJson['require-dev']);
 $toJson['autoload-dev'] = array_merge_recursive($toJson['autoload-dev'] ?? [], $fromJson['autoload-dev']);
 
 file_put_contents($toFile, json_encode($toJson, JSON_PRETTY_PRINT));
