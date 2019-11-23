@@ -26,8 +26,8 @@ composer config minimum-stability dev
 composer config repositories.travis_to_test git https://github.com/$TRAVIS_REPO_SLUG.git
 #TODO make it work with tags as well:
 
-php .travis/merge-dev.php vendor/$COMPOSER_PACKAGE_NAME/tests/composer.json composer.json
 composer require ${COMPOSER_PACKAGE_NAME}:dev-${TRAVIS_BRANCH}\#{$TRAVIS_COMMIT}
+php ../.travis/merge-dev.php vendor/$COMPOSER_PACKAGE_NAME/composer.json composer.json
 
 # prepare for test suite
 case $TEST_SUITE in
