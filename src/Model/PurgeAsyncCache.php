@@ -9,9 +9,6 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 
 class PurgeAsyncCache
 {
-    /**
-     * Size of the purge headers we are allowed to send to Varnish
-     */
     const VARNISH_PURGE_TAG_GLUE = "|";
     const MAX_HEADER_LENGTH_CONFIG_PATH = 'system/full_page_cache/async_varnish/varnish_max_header_length';
 
