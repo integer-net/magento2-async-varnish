@@ -41,3 +41,17 @@ class FakeTagRepository implements TagRepositoryInterface
     }
 
 }
+
+/*
+ * PHP 7.2 Polyfill
+ */
+if (!\function_exists('array_key_last')) {
+    function array_key_last(array $array)
+    {
+        if (empty($array)) {
+            return null;
+        }
+
+        return key(array_slice($array, -1, 1, true));
+    }
+}
