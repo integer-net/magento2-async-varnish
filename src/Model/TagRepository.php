@@ -5,6 +5,7 @@ namespace IntegerNet\AsyncVarnish\Model;
 
 use Magento\Framework\App\ResourceConnection;
 use IntegerNet\AsyncVarnish\Model\ResourceModel\Tag as TagResource;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 
 class TagRepository
 {
@@ -16,7 +17,7 @@ class TagRepository
     /**
      * Limits the amount of tags being fetched from database
      */
-    const TAG_LIMIT = 1000000;
+    const FETCH_TAG_LIMIT_CONFIG_PATH = 'system/full_page_cache/async_varnish/varnish_fetch_tag_limit';
 
     private $lastUsedId;
 
@@ -35,16 +36,25 @@ class TagRepository
      */
     private $tagResource;
 
+    private $scopeConfig;
+
     /**
      * @param \Magento\Framework\App\ResourceConnection $resource
      */
     public function __construct(
         ResourceConnection $resource,
-        TagResource $tagResource
+        TagResource $tagResource,
+        ScopeConfigInterface $scopeConfig
     ) {
         $this->connection = $resource->getConnection();
         $this->resource = $resource;
         $this->tagResource = $tagResource;
+        $this->scopeConfig = $scopeConfig;
+    }
+
+    private function getTagFetchLimit()
+    {
+        return $this->scopeConfig->getValue(self::FETCH_TAG_LIMIT_CONFIG_PATH);
     }
 
     /**
@@ -102,8 +112,9 @@ class TagRepository
         $tags = [];
 
         $tagResource = $this->tagResource;
+        $tagFetchLimit = $this->getTagFetchLimit();
 
-        $maxIdResult = $tagResource->getMaxTagId(self::TAG_LIMIT);
+        $maxIdResult = $tagResource->getMaxTagId($tagFetchLimit);
 
         if (empty($maxIdResult)) {
             return $tags;

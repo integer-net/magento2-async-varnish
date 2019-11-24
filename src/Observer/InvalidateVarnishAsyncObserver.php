@@ -32,6 +32,7 @@ class InvalidateVarnishAsyncObserver implements ObserverInterface
      * @var \IntegerNet\AsyncVarnish\Model\TagRepository
      */
     private $tagRepository;
+
     /**
      * @param \Magento\PageCache\Model\Config $config
      * @param \Magento\CacheInvalidate\Model\PurgeCache $purgeCache

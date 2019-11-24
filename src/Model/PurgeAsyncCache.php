@@ -5,30 +5,41 @@ namespace IntegerNet\AsyncVarnish\Model;
 
 use Magento\CacheInvalidate\Model\PurgeCache as PurgeCache;
 use IntegerNet\AsyncVarnish\Model\TagRepository as TagRepository;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 
 class PurgeAsyncCache
 {
-    /**
-     * Size of the chunks we're sending to Varnish
-     */
-    const CHUNK_SIZE = 100;
+    const VARNISH_PURGE_TAG_GLUE = "|";
+    const MAX_HEADER_LENGTH_CONFIG_PATH = 'system/full_page_cache/async_varnish/varnish_max_header_length';
 
     /**
-     * @var \Magento\CacheInvalidate\Model\PurgeCache
+     * @var PurgeCache
      */
     private $purgeCache;
 
     /**
-     * @var \IntegerNet\AsyncVarnish\Model\TagRepository
+     * @var TagRepository
      */
     private $tagRepository;
 
+    /**
+     * @var ScopeConfigInterface
+     */
+    private $scopeConfig;
+
     public function __construct(
         PurgeCache $purgeCache,
+        ScopeConfigInterface $scopeConfig,
         TagRepository $tagRepository
     ) {
         $this->purgeCache = $purgeCache;
+        $this->scopeConfig = $scopeConfig;
         $this->tagRepository = $tagRepository;
+    }
+
+    private function getMaxHeaderLengthFromConfig()
+    {
+        return $this->scopeConfig->getValue(self::MAX_HEADER_LENGTH_CONFIG_PATH);
     }
 
     /**
@@ -38,11 +49,23 @@ class PurgeAsyncCache
     public function run():int
     {
         $tags = $this->tagRepository->getAll();
-
+        $maxHeaderLength = $this->getMaxHeaderLengthFromConfig();
         if (!empty($tags)) {
-            $tagChunks = array_chunk($tags, self::CHUNK_SIZE, true);
+            $tagChunks = [];
+            $index = 0;
+            foreach ($tags as $tag) {
+                $nextChunkString = (isset($tagChunks[$index])
+                    ? $tagChunks[$index] . self::VARNISH_PURGE_TAG_GLUE
+                    : '') . $tag;
+                if (strlen($nextChunkString) <= $maxHeaderLength) {
+                    $tagChunks[$index] = $nextChunkString;
+                } else {
+                    $index ++;
+                    $tagChunks[$index] = $tag;
+                }
+            }
             foreach ($tagChunks as $tagChunk) {
-                $this->purgeCache->sendPurgeRequest(implode('|', array_unique($tagChunk)));
+                $this->purgeCache->sendPurgeRequest($tagChunk);
             }
         }
 

@@ -4,13 +4,14 @@ declare(strict_types=1);
 namespace IntegerNet\AsyncVarnish\Console\Command;
 
 use IntegerNet\AsyncVarnish\Model\PurgeAsyncCache as Purger;
+use Magento\Framework\App\State;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class PurgeAsyncTagsCommand extends \Symfony\Component\Console\Command\Command
 {
     /**
-     * @var \Magento\Framework\App\State
+     * @var State
      */
     private $appState;
 
@@ -20,7 +21,7 @@ class PurgeAsyncTagsCommand extends \Symfony\Component\Console\Command\Command
     private $purger;
 
     public function __construct(
-        \Magento\Framework\App\State\Proxy $appState,
+        State $appState,
         Purger $purger,
         ?string $name = null
     ) {
@@ -32,16 +33,16 @@ class PurgeAsyncTagsCommand extends \Symfony\Component\Console\Command\Command
     /**
      * {@inheritdoc}
      */
-    protected function configure() //phpcs:ignore
+    protected function configure()
     {
         $this->setName('integernet:asyncvarnish:purge')
-            ->setDescription('Purges Varnish Tags ');
+            ->setDescription('Purges Varnish Tags currently stored in database table');
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output) //phpcs:ignore
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         try {
             $this->appState->setAreaCode('adminhtml');
