@@ -56,9 +56,9 @@ class TagRepository implements TagRepositoryInterface
         $this->scopeConfig = $scopeConfig;
     }
 
-    private function getTagFetchLimit()
+    private function getTagFetchLimit(): int
     {
-        return $this->scopeConfig->getValue(self::FETCH_TAG_LIMIT_CONFIG_PATH);
+        return (int) $this->scopeConfig->getValue(self::FETCH_TAG_LIMIT_CONFIG_PATH);
     }
 
     /**
