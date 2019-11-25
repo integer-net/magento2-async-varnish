@@ -42,6 +42,25 @@ class PurgeAsyncCache
         return $this->scopeConfig->getValue(self::MAX_HEADER_LENGTH_CONFIG_PATH);
     }
 
+    private function createTagChunks(array $tags): array
+    {
+        $maxHeaderLength = $this->getMaxHeaderLengthFromConfig();
+        $tagChunks = [];
+        $index = 0;
+        foreach ($tags as $tag) {
+            $nextChunkString = (isset($tagChunks[$index])
+                    ? $tagChunks[$index] . self::VARNISH_PURGE_TAG_GLUE
+                    : '') . $tag;
+            if (strlen($nextChunkString) <= $maxHeaderLength) {
+                $tagChunks[$index] = $nextChunkString;
+            } else {
+                $index ++;
+                $tagChunks[$index] = $tag;
+            }
+        }
+        return $tagChunks;
+    }
+
     /**
      * @throws \Zend_Db_Statement_Exception
      * @throws \Exception
@@ -49,21 +68,9 @@ class PurgeAsyncCache
     public function run():int
     {
         $tags = $this->tagRepository->getAll();
-        $maxHeaderLength = $this->getMaxHeaderLengthFromConfig();
+
         if (!empty($tags)) {
-            $tagChunks = [];
-            $index = 0;
-            foreach ($tags as $tag) {
-                $nextChunkString = (isset($tagChunks[$index])
-                    ? $tagChunks[$index] . self::VARNISH_PURGE_TAG_GLUE
-                    : '') . $tag;
-                if (strlen($nextChunkString) <= $maxHeaderLength) {
-                    $tagChunks[$index] = $nextChunkString;
-                } else {
-                    $index ++;
-                    $tagChunks[$index] = $tag;
-                }
-            }
+            $tagChunks = $this->createTagChunks($tags);
             foreach ($tagChunks as $tagChunk) {
                 $this->purgeCache->sendPurgeRequest($tagChunk);
             }
