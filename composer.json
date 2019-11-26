@@ -26,8 +26,13 @@
       "src/registration.php"
     ],
     "psr-4": {
-      "IntegerNet\\AsyncVarnish\\Test\\": "tests/",
       "IntegerNet\\AsyncVarnish\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "IntegerNet\\AsyncVarnish\\Test\\": "tests/",
+      "IntegerNet\\AsyncVarnish\\": "tests/src/"
     }
   },
   "repositories": [
@@ -37,6 +42,6 @@
     }
   ],
   "require-dev": {
-    "magento/magento-coding-standard": "@dev"
+    "react/http": "0.8.5"
   }
 }

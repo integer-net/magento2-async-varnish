@@ -22,11 +22,10 @@ class Tag extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         $connection = $this->getConnection();
 
         $subSetSelect = $connection->select()->from(
-            self::TABLE_NAME,
+            $this->getTable(self::TABLE_NAME),
             ['entity_id','tag']
         )->order(
-            'entity_id',
-            'ASC'
+            'entity_id ASC'
         )->limit(
             $limit
         );
@@ -44,7 +43,7 @@ class Tag extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         $connection = $this->getConnection();
 
         $select = $connection->select()->from(
-            ['main_table' => self::TABLE_NAME],
+            ['main_table' => $this->getTable(self::TABLE_NAME)],
             ['tag']
         )->group(
             'tag'

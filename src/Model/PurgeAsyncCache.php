@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace IntegerNet\AsyncVarnish\Model;
 
-use Magento\CacheInvalidate\Model\PurgeCache as PurgeCache;
-use IntegerNet\AsyncVarnish\Model\TagRepository as TagRepository;
+use Magento\CacheInvalidate\Model\PurgeCache;
+use IntegerNet\AsyncVarnish\Model\TagRepository;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 
 class PurgeAsyncCache
@@ -65,7 +65,7 @@ class PurgeAsyncCache
      * @throws \Zend_Db_Statement_Exception
      * @throws \Exception
      */
-    public function run():int
+    public function run(): int
     {
         $tags = $this->tagRepository->getAll();
 

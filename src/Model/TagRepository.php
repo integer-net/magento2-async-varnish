@@ -3,11 +3,12 @@ declare(strict_types=1);
 
 namespace IntegerNet\AsyncVarnish\Model;
 
+use IntegerNet\AsyncVarnish\Api\TagRepositoryInterface;
 use Magento\Framework\App\ResourceConnection;
 use IntegerNet\AsyncVarnish\Model\ResourceModel\Tag as TagResource;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 
-class TagRepository
+class TagRepository implements TagRepositoryInterface
 {
     /**
      * DB Storage table name
@@ -19,6 +20,9 @@ class TagRepository
      */
     const FETCH_TAG_LIMIT_CONFIG_PATH = 'system/full_page_cache/async_varnish/varnish_fetch_tag_limit';
 
+    /**
+     * @var int|null
+     */
     private $lastUsedId;
 
     /**
@@ -52,9 +56,9 @@ class TagRepository
         $this->scopeConfig = $scopeConfig;
     }
 
-    private function getTagFetchLimit()
+    private function getTagFetchLimit(): int
     {
-        return $this->scopeConfig->getValue(self::FETCH_TAG_LIMIT_CONFIG_PATH);
+        return (int) $this->scopeConfig->getValue(self::FETCH_TAG_LIMIT_CONFIG_PATH);
     }
 
     /**
@@ -64,7 +68,7 @@ class TagRepository
      * @return int
      * @throws \Exception
      */
-    public function insertMultiple($tags = [])
+    public function insertMultiple($tags = []): int
     {
         if (empty($tags)) {
             return 0;
@@ -92,7 +96,7 @@ class TagRepository
      * @return int
      * @throws \Exception
      */
-    public function deleteUpToId($maxId = 0)
+    public function deleteUpToId(int $maxId = 0): int
     {
         try {
             $tableName = $this->resource->getTableName(self::TABLE_NAME);
@@ -103,10 +107,9 @@ class TagRepository
     }
 
     /**
-     * @return array
      * @throws \Zend_Db_Statement_Exception
      */
-    public function getAll()
+    public function getAll(): array
     {
 
         $tags = [];
@@ -120,24 +123,21 @@ class TagRepository
             return $tags;
         }
 
-        $maxId = $maxIdResult['max_id'];
+        $maxId = (int)$maxIdResult['max_id'];
 
-        $uniqueTagsResult = $tagResource->getUniqueTagsByMaxId((int)$maxId);
+        $uniqueTagsResult = $tagResource->getUniqueTagsByMaxId($maxId);
 
         if (!empty($uniqueTagsResult)) {
             $this->lastUsedId = $maxId;
 
             foreach ($uniqueTagsResult as $tag) {
-                $tags[] = ($tag['tag']);
+                $tags[] = $tag['tag'];
             }
         }
         return $tags;
     }
 
-    /**
-     * @return int
-     */
-    public function getLastUsedId()
+    public function getLastUsedId(): int
     {
         return $this->lastUsedId ?: 0;
     }
